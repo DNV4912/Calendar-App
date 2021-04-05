@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='tableSelection.css')}}">
+<head>
+
+</head>
+<h2 id='h1'>Create your own custom Indian calendar</h2>
+<br>
+<h4 id='h2'>Click on the button below after selecting your holidays</h4>
+<h1 id='complete'>YOUR FILE IS DOWNLOADING!!</h1>
+<table   class="table" id="tableSelected">
+    <tr>
+        {% for col in column_names %}
+        <th>{{col}}</th>
+        {% endfor %}
+    </tr>
+    {% for row in row_data %}
+    <tr >
+        {% for col, row_ in zip(column_names, row) %}
+        {% if col == link_column %}
+        <td>
+           
+                {{ row_ }}
+            
+        </td>
+        {% else %}
+        <td>{{row_}}</td>
+        {% endif %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+
+</table>
+<br>
+<div class="center">
+<button id ='submit' onclick="showSelectedRow($rows);">Show Me</button>
+</div>
+<br/>
+<label>Selected rows information will be displayed below.</label>
+<ul id="info">
+</ul>
+<button id='back'>Back</button>
+
+<button id='generate'>Generate file</button>
+
+</html>
+
+<script src="{{url_for('static', filename='tableSelection.js')}}"></script>
+<script type="text/javascript">
+    var $rows = [];
+    $(function() {
+    	console.log( "ready!" );
+        $('#back').hide()
+        $('#generate').hide()
+        $('label').hide()
+        $('#complete').hide()
+        // start plugin
+        $('#tableSelected').TableSelection({
+                sort : true, // sort or not (true | false)
+                status : 'multiple', // single or multiple selection (default is 'single')
+            }, function(obj){ // callback function return selected rows array
+                $rows = obj.rows;
+                console.log(obj.rows)
+        });
+
+    });
+
+    // Get HTML Object from row in array
+    function showSelectedRow(array){
+        if (array.length == 0){
+                alert('Select the holidays!!')
+                return
+            }
+            var myrow;
+        //myrow = [{'Day':Tuesday,"Date":xxxxxx,"Name":ddddd}]
+        $('#tableSelected').hide()
+        $ ("#submit").hide()
+        $('label').show()
+        $('#info').show()
+        $('#h1').hide()
+        $('#h2').hide()
+        
+        $('#info').empty();
+        $.each(array, function(i, row){
+            $('#info').append('<li>'
+                + $('#tableSelected').RowValue(row).find('td').eq(0).html()
+                +' '                                                           // HTML Object
+                + $('#tableSelected').RowValue(row).find('td').eq(1).html()
+                +' '
+                + $('#tableSelected').RowValue(row).find('td').eq(2).html()
+                + '</li>');
+        
+
+            }
+        
+        );
+        $('#back').show()
+        $('#generate').show()
+
+        $("#back").click(function(){
+            $("#back").hide();
+            $ ("#submit").show()
+            $('#info').hide()
+            $('#tableSelected').show()
+            $('#generate').hide()
+            $('label').hide()
+            $('#h1').show()
+            $('#h2').show()
+             })
+
+        $("#generate").click(function(){
+            $("#back").hide();
+            $ ("#submit").hide()
+            $('#info').hide()
+            $('#tableSelected').hide()
+            $('#generate').hide()
+            $('label').hide() 
+            $('#complete').show()
+
+           
+            
+            $.ajax({
+            url: '/create'
+        ,   type: 'POST'
+        ,   contentType: 'application/json'
+        ,   data: JSON.stringify(array) //stringify is important
+        ,   success: function (data){ // Returns the file on success
+                var fileContentStr = data // browser stores the file
+                var fileContent = 'data:text/calendar,' + encodeURIComponent(fileContentStr);
+                
+                    window.open(fileContent); //File gets downloaded on the user's browser
+                console.log("Data: " + data + "\nStatus: " + status);
+                // let file = new Blob([$('#dvData').html()], {type:"text/calendar"});
+
+                // let url = URL.createObjectURL(file);
+
+                // let a = $("<a />", {
+                // href: '/download',
+                // download: "your_custom.ics"
+                // })
+                // .appendTo("body")
+                // .get(0)
+                // .click();
+                // e.preventDefault();
+                    }
+                });
+             })
+
+
+  
+    }
+</script>
+
