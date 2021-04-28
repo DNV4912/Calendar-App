@@ -8,7 +8,8 @@
 <h2 id='h1'>Create your own custom Indian calendar</h2>
 <br>
 <h4 id='h2'>Click on the button below after selecting your holidays</h4>
-<h1 id='complete'>YOUR FILE IS DOWNLOADING!!</h1>
+<h1 id='complete'>Save this code to download the calendar :</h1>
+<h2 id ='test'></h2>
 <table   class="table" id="tableSelected">
     <tr>
         {% for col in column_names %}
@@ -42,7 +43,11 @@
 </ul>
 <button id='back'>Back</button>
 
-<button id='generate'>Generate file</button>
+<button id='generate'>Get calendar ID</button>
+<a>
+<button id ='generate2' >Next</button>
+</a>
+
 
 </html>
 
@@ -55,6 +60,7 @@
         $('#generate').hide()
         $('label').hide()
         $('#complete').hide()
+        $('#generate2').hide()
         // start plugin
         $('#tableSelected').TableSelection({
                 sort : true, // sort or not (true | false)
@@ -126,10 +132,15 @@
         ,   contentType: 'application/json'
         ,   data: JSON.stringify(array) //stringify is important
         ,   success: function (data){ // Returns the file on success
-                var fileContentStr = data // browser stores the file
-                var fileContent = 'data:text/calendar,' + encodeURIComponent(fileContentStr);
-                
-                    window.open(fileContent); //File gets downloaded on the user's browser
+                // var fileContentStr = data // browser stores the file
+                // var fileContent = 'data:text/calendar,' + encodeURIComponent(fileContentStr);
+                document.getElementById("test").innerHTML = data
+
+                $('#generate2').show()
+                $('#generate2').click(function(){
+                    window.open('/download')
+                })
+                    // window.open('fileContentStr'); //File gets downloaded on the user's browser
                 console.log("Data: " + data + "\nStatus: " + status);
                 // let file = new Blob([$('#dvData').html()], {type:"text/calendar"});
 
