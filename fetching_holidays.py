@@ -171,7 +171,7 @@ def init():
         insert_values('Holidays_table',5,df)
         update_table(df)
     
-    print(select_table())
+    # print(select_table())
     # cursor.execute('SELECT * from Holidays_table')
     # print(cursor.fetchall())
 

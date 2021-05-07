@@ -39,7 +39,7 @@ def create():
 @app.route('/download', methods=['GET'])
 def download():
     #ID = request.form['fname']
-    return render_template('search.html')
+    return render_template('search.html') #Opens the HTML page where the user can enter the unique code
     # return send_from_directory('./ics_files/','your_custom.ics')
 
 @app.route('/generate_ics', methods=['POST'])

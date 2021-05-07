@@ -7,8 +7,8 @@ import sqlite3
 def validate_master_id(master_id): # Function to check if the user input is valid or not
     db = sqlite3.connect('Holidays_db',check_same_thread=False)
     cursor = db.cursor()
-    query = "SELECT reference_id from master_table"
-    recs = cursor.execute(query)
+    query = "SELECT reference_id from master_table where reference_id = ?"
+    recs = cursor.execute(query,(master_id,))
     sql_id_list = []
 
     for row in recs:
@@ -25,16 +25,16 @@ def validate_master_id(master_id): # Function to check if the user input is vali
 def generate_file(master_id,table):
     db = sqlite3.connect('Holidays_db',check_same_thread=False)
     cursor = db.cursor()
-    query = "SELECT holiday_id from master_table WHERE reference_id ='"+master_id+"'"
-    recs = cursor.execute(query)
+    query = "SELECT holiday_id from master_table WHERE reference_id = ?"
+    recs = cursor.execute(query,(master_id,))
     sql_id_list = []
 
     for row in recs:
         sql_id_list.append(row[0]) # gets the list of Holiday IDs pertaining to the required use case
 
     print(sql_id_list)
-    new = table['Date'].str.split(" ", n = 2, expand = True)
-    new['Date'] = new[0] + " "+ new[1].apply(lambda x:str(x)[:3]) + " "+new[2]
+    new = table['Date'].str.split(" ", n = 2, expand = True) #Splits the date into 3 columns as it is in text
+    new['Date'] = new[0] + " "+ new[1].apply(lambda x:str(x)[:3]) + " "+new[2] #Getting the date in the required format eg: 15 Jan 2020 from 15 January 2020
     
     table["Date2"] =new['Date']
     table = table.dropna()
