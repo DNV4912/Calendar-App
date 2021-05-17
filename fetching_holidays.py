@@ -75,11 +75,7 @@ def parse_html_table(table):
 
 
 def get_table():
-    table = parse_html_table(tables[1])
-
-    new = table['Date'].str.split(" ", n = 2, expand = True)
-    new['Date'] = new[0] + " "+ new[1].apply(lambda x:str(x)[:3]) + " "+new[2]
-    
+    table = parse_html_table(tables[1])    
     table_actual = table
     # table["Date2"] =new['Date']
     # table = table.dropna()
@@ -125,7 +121,7 @@ def insert_values(table_name,no_of_columns,dataframe):         #Inserts values i
         db.commit()
         print('data inserted')
 
-def update_table(df):
+def update_table(df): #Function to update the DB if new holidays are added to the source
     db = sqlite3.connect('Holidays_db')
     cursor = db.cursor()
     query = "SELECT ID from Holidays_table"
@@ -137,7 +133,7 @@ def update_table(df):
         sql_id_list.append(row)
 
     df_id_list = list(df['id'])
-    # print("Tjis is the db table",df_id_list)
+    
     new_ids = [value for value in df_id_list if value in sql_id_list] #Find new holidays
 
     if len(new_ids)!=0: 
@@ -146,7 +142,7 @@ def update_table(df):
             new_df.append(df.loc[df['id']==new_id])
         insert_values('Holidays_table', 5, new_df) # insert the new holidays into the existing table
     
-def select_table():
+def select_table(): #Select the table to show on the html page from the DB
     db = sqlite3.connect('Holidays_db')
     cursor = db.cursor()
     df = pd.read_sql_query("SELECT * FROM Holidays_table", db)
@@ -160,7 +156,7 @@ def init():
     print("connected to db")
     cursor.execute(''' SELECT count(name) FROM sqlite_master WHERE type='table' AND name= 'Holidays_table' ''')
     #if the count is 1, then table exists
-    #update_table(get_table())
+    
     if cursor.fetchone()[0]==1 : 
         print('Table exists.')
         df = get_table()
@@ -171,9 +167,7 @@ def init():
         insert_values('Holidays_table',5,df)
         update_table(df)
     
-    # print(select_table())
-    # cursor.execute('SELECT * from Holidays_table')
-    # print(cursor.fetchall())
+    
 
 if __name__ == "__main__":
     init()   
