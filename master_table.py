@@ -59,7 +59,7 @@ def init():
     #if the count is 1, then table exists
     #update_table(get_table())
     if cursor.fetchone()[0]==1 : 
-        print('Table exists.')
+        print('Master Table exists.')
     else:
         create_master()
 

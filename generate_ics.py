@@ -4,6 +4,7 @@ import numpy as np
 from datetime import datetime
 import sqlite3
 
+
 def validate_master_id(master_id): # Function to check if the user input is valid or not
     db = sqlite3.connect('Holidays_db',check_same_thread=False)
     cursor = db.cursor()
@@ -32,7 +33,7 @@ def generate_file(master_id,table):
     for row in recs:
         sql_id_list.append(row[0]) # gets the list of Holiday IDs pertaining to the required use case
 
-    print(sql_id_list)
+    #print(sql_id_list)
     new = table['Date'].str.split(" ", n = 2, expand = True) #Splits the date into 3 columns as it is in text
     new['Date'] = new[0] + " "+ new[1].apply(lambda x:str(x)[:3]) + " "+new[2] #Getting the date in the required format eg: 15 Jan 2020 from 15 January 2020
     
