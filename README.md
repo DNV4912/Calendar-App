@@ -10,5 +10,9 @@ Run the flask-app.py file.
 ![image](https://user-images.githubusercontent.com/37058545/118569413-8983e800-b797-11eb-9ea2-9f11d6cc263a.png)
 3. This will then show you the selections that you have made, if you are happy then you can proceed to get your unique ID for the desired selections, if unhappy then you can go back and change your selections.<br />
 ![image](https://user-images.githubusercontent.com/37058545/118569811-50984300-b798-11eb-83d6-d11f9706a422.png)
+4. An ID is generated copy this ID and click on next. You can save this ID if ever want to download the same calendar again in the future.
+5. Enter the ID and click on download, the ics file will be generated. <br />
+![image](https://user-images.githubusercontent.com/37058545/118570169-327f1280-b799-11eb-920b-399b35e5277a.png)
+
 
  
