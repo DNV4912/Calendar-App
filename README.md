@@ -16,9 +16,10 @@ Run the flask-app.py file.
 
 ## Updates
 ### v1.01 - 15/05/2021
-1. Line 10 of generate_ics.py, a where clause was added to avaoid loading all the IDs in memory
+1. Line 10 of generate_ics.py, a where clause was added to avaoid loading all the IDs in memory.
 2. Line 28 of the above file was modified to use prepared statements. Earlier string concatination was used.
 3. Line 38 of the above file, comments were added.
+4. README made more verbose, explaining how to use the app and adding a section for updates.
 
 
  
