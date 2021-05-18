@@ -14,8 +14,8 @@ Run the flask-app.py file.
 5. Enter the ID and click on download, the ics file will be generated. <br />
 ![image](https://user-images.githubusercontent.com/37058545/118570169-327f1280-b799-11eb-920b-399b35e5277a.png)
 
-##Updates
-###v1.01 - 15/05/2021
+## Updates
+### v1.01 - 15/05/2021
 1. Line 10 of generate_ics.py, a where clause was added to avaoid loading all the IDs in memory
 2. Line 28 of the above file was modified to use prepared statements. Earlier string concatination was used.
 3. Line 38 of the above file, comments were added.
